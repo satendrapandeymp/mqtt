@@ -1,4 +1,5 @@
 import time
+import datetime
 import paho.mqtt.client as mqtt
 
 server = "localhost"
@@ -15,7 +16,7 @@ try:
     client.loop_start() #start loop
     msgNum = int(input("Quantity of test messages: "))
     for i in range(msgNum):
-        message = "test msg " + str(i + 1)
+        message = "test data " + str(i + 1) + ", at datetime: " + str(datetime.datetime.now())
         client.publish(topic, payload=message, qos=0, retain=False) #publish
         time.sleep(1)
     client.loop_stop()  #stop loop
