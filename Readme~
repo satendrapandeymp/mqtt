@@ -1,0 +1,9 @@
+Client.py script main work is to get message and put that in our database.
+
+test.py is for publishing value.
+
+new.py is for reading database.
+
+Make a user as testuser with pass test pass, Create a database named as testdb and run mosquitto on port 1881.
+
+

@@ -16,7 +16,7 @@ try:
     msgNum = int(input("Quantity of test messages: "))
     for i in range(msgNum):
         message = "test msg " + str(i + 1)
-        client.publish(topic, payload=message, qos=1, retain=False) #publish
+        client.publish(topic, payload=message, qos=0, retain=False) #publish
         time.sleep(1)
     client.loop_stop()  #stop loop
     client.disconnect()
