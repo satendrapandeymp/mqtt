@@ -16,7 +16,7 @@ try:
     client.loop_start() #start loop
     msgNum = int(input("Quantity of test messages: "))
     for i in range(msgNum):
-        message = "test data " + str(i + 1) + ", at datetime: " + str(datetime.datetime.now())
+        message = str(i + 1) + "," + str(datetime.datetime.now())
         client.publish(topic, payload=message, qos=0, retain=False) #publish
         time.sleep(1)
     client.loop_stop()  #stop loop

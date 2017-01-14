@@ -25,6 +25,9 @@ def onConnect(client, userdata, rc):    #event on connecting
 """
 def onMessage(client, userdata, message):   #event on receiving message
     print("Topic: " + message.topic + ", Message: " + message.payload )
+    temp = message.payload
+    print(temp)
+    print(temp.split(',')[0], temp.split(',')[1])
     with con:
         cur = con.cursor()
         cur.execute("INSERT INTO Writers (name) " "VALUES ('{0}')" .format(message.payload))
