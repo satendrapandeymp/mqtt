@@ -1,9 +1,7 @@
-Client.py script main work is to get message and put that in our database.
+Create a database named as testdb and run mosquitto on port 1881.
 
-test.py is for publishing value.
+Register atleast 9 users and then run node_pub && Sub then sensor and finnaly gateway.
+Add as much as node/sensor/data you want to add.
 
-new.py is for reading database.
-
-Make a user as testuser with pass test pass, Create a database named as testdb and run mosquitto on port 1881.
-
-
+I had use necessary details in message instead of topic, We can use a unique topic to avoid someone
+who trying to sending data by guessing topic
