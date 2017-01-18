@@ -14,7 +14,7 @@ port = 1881
 vhost = "yourvhost"
 username = "username"
 password = "password"
-topic = "pbkdf2_sha256$30000$Uf4zhr3dPVMc$ssPcbJxlnE+haTkUhxo+2kaEj4tX0E5L3UIibvQW8ak"
+topic = "test"
 
 try:
     client = mqtt.Client(client_id="", clean_session=True, userdata=None, protocol="MQTTv31")
@@ -24,7 +24,7 @@ try:
     msgNum = int(input("Quantity of Node to be added to users randomly: "))
     for i in range(msgNum):
         random_gen = randomword(12)
-        User_id = randint(1,9)
+        User_id = 1
         print(random_gen)
         message = random_gen +"/" + str(User_id)
         client.publish(topic, payload=message, qos=0, retain=False) #publish

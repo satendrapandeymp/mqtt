@@ -19,7 +19,7 @@ port = 1881
 vhost = "yourvhost"
 username = "username1"
 password = "password"
-topic = "pbkdf2_sha256$30000$NbWUZvmfrrfi$n1sM6Qo3KoUebhdWbD3zyut1Oz+GYGHqdViKafCL1Lo"
+topic = "123"
 con = mdb.connect('localhost', 'root', '  ', 'test')
 
 """
@@ -46,7 +46,7 @@ def onMessage(client, userdata, message):   #event on receiving message
         Data = message.payload.split("/")
         print (message.payload)
         cur = con.cursor()
-        cur.execute("INSERT INTO chain_sensor (name, node_name_id, doc, description, image) " "VALUES ('{0}','{1}','{2}','{3}','{4}')" .format(Data[0], int(Data[1]), doc, random_gen,image))
+        cur.execute("INSERT INTO chain_sensor (name, node_name_id, doc, description) " "VALUES ('{0}','{1}','{2}','{3}')" .format(Data[0], int(Data[1]), doc, random_gen))
 
 while True:
     try:

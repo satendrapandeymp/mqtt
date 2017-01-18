@@ -19,7 +19,7 @@ port = 1881
 vhost = "yourvhost"
 username = "username1"
 password = "password"
-topic = "pbkdf2_sha256$30000$Uf4zhr3dPVMc$ssPcbJxlnE+haTkUhxo+2kaEj4tX0E5L3UIibvQW8ak"
+topic = "test"
 con = mdb.connect('localhost', 'root', '  ', 'test')
 
 """
@@ -42,10 +42,9 @@ def onMessage(client, userdata, message):   #event on receiving message
         var = randint(0,365)
         doc = datetime.now()-timedelta(365-var)
         random_gen = random_chars(12)
-        image = "https://d3s5r33r268y59.cloudfront.net/97443/products/thumbs/2016-08-30T16:15:27.419Z-IMG-20160823-WA0018.jpg.855x570_q85_pad_rcrop.jpg"
         Data = message.payload.split("/")
         cur = con.cursor()
-        cur.execute("INSERT INTO chain_node (name, owner_id, gateway_name_id, doc, description, image) " "VALUES ('{0}',{1},1,'{2}','{3}','{4}')" .format(Data[0], int(Data[1]), doc, random_gen,image))
+        cur.execute("INSERT INTO chain_node (name, owner_id, doc, description) " "VALUES ('{0}',{1},'{2}','{3}')" .format(Data[0], int(Data[1]), doc, random_gen))
 
 while True:
     try:
