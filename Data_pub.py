@@ -1,85 +1,64 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
 # Imports
-
 import time
-import MySQLdb as mdb
-from datetime import datetime, timedelta
 import paho.mqtt.client as mqtt
 from random import randint
 from string import ascii_uppercase
-import random , string
+import random, string
 from itertools import islice
+from datetime import datetime, timedelta
 
-# For getting a random String
-def randomword(length):
-   return ''.join(random.choice(string.lowercase) for i in range(length))
-
-# For connecting to mosquitto
+# For connection with mosquitto
 server = "localhost"
 port = 1881
 vhost = "yourvhost"
 username = "username"
 password = "password"
+topic = "sensor/"
+# Unique topic
 
-# A unique topic
-topic = "sensor/#"
+# connecting to mosquitto
+try:
+    client = mqtt.Client(client_id="", clean_session=True, userdata=None, protocol="MQTTv31")
+    client.username_pw_set(vhost + ":" + username, password)
+    client.connect(server, port, keepalive=60, bind_address="") #connect
+    client.loop_start() #start loop
 
-# For connection to mysql
-con = mdb.connect('localhost', 'root', '  ', 'test')
+    # For number of data to generate randomly
+    msgNum = int(input("Quantity of data: "))
+    for i in range(msgNum):
 
-"""
- * This method is the callback on connecting to broker.
- * @ It subscribes the target topic.
-"""
+        # For generation of random floating point to treat as data
+        random_gen = random.uniform(4.5, 42.7)
+        print(random_gen)
 
-# For subscribing our topic on connect
-def onConnect(client, userdata, rc):    #event on connecting
-    client.subscribe([(topic, 1)])  #subscribe
-
-"""
- * This method is the callback on receiving messages.
- * @ It prints the message topic and payload on console.
-"""
-
-
-def onMessage(client, userdata, message):   #event on receiving message
-
-    # For writing in database
-    with con:
+        # I had already set 10 sensors so chossing a random sensor to put data in that sensor's table
+        sensor_id = randint(1,10)
+        topic = "sensor/"
+        topic += str(sensor_id) + "/data/"
 
         # For setting a random DOC.
         var = randint(0,365)
         doc = datetime.now()-timedelta(365-var)
 
-        # For creating a random String for description field of data
-        # TODO floating point data insertion -- Done
-        random_gen = randomword(12)
 
-        # Split message to get data and sensor id Respectively
-        # TODO message payload -- data only -- Done -- Data+Doc
-        Data = message.payload.split("/")
-        sen = message.topic.split("/")
+        # Joining data and Sensor_id with "/" so we can break it and get data and sensor id seperate to write data
+        message = str(random_gen) + "/" + str(doc)
 
-        # For Writing data in database
-        # TODO Modify tables -- Remove description -- Data , Image -- Node/sensor -- Done
+        # timestamp 1072392329
+        # data 1239002382
 
-        print("Topic: " + message.topic + ", Message: " + message.payload )
-        cur = con.cursor()
+        #publish
+        client.publish(topic, payload=message, qos=0, retain=False)
 
-        cur.execute("INSERT INTO chain_data ( data,sensor_name_id, doc) " "VALUES ('{0}','{1}','{2}')" .format(float(Data[0]), int(sen[1]), Data[1]))
+        # Sleeping for .0001 sec
+        time.sleep(.0001)
 
-# for connection with mosquitto
-while True:
-    try:
-        client = mqtt.Client(client_id="", clean_session=True, userdata=None, protocol="MQTTv31")
-        client.username_pw_set(vhost + ":" + username, password)
-        client.on_connect = onConnect
-        client.on_message = onMessage
-        client.connect(server, port, keepalive=60, bind_address="12") #connect
-        client.loop_forever()   #automatically reconnect once loop forever
-    except Exception, e:
-        #when initialize connection, reconnect on exception
-        print "Exception handled, reconnecting...\nDetail:\n%s" % e
-        time.sleep(5)
+    # stop loop
+    client.loop_stop()
+
+    # disconnecting
+    client.disconnect()
+
+# Printing in case of errors
+except Exception, e:
+    print e

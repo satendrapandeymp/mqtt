@@ -1,9 +1,3 @@
-Client.py script main work is to get message and put that in our database.
-
-test.py is for publishing value.
-
-new.py is for reading database.
-
-Make a user as testuser with pass test pass, Create a database named as testdb and run mosquitto on port 1881.
-
-
+Create a database named as test and run mosquitto on port 1881.
+Clone update django ,model and migrate and then create a user manually.
+After that use scripts to add Node or Sensor or data.
